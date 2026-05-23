@@ -1,6 +1,6 @@
 +++
 date = '2026-05-23T20:54:02+08:00'
-draft = flase
+draft = false
 title = 'PersonalBlogSetup'
 +++
 
