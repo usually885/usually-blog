@@ -9,7 +9,7 @@ title = 'Setblog'
 
 ## 环境配置
 
-![image-20260523141112176](/PersonalBlogsetup-images/image-20260523141112176.png)
+![image-20260523141112176](../../PersonalBlogsetup-images/image-20260523141112176.png)
 
 在系统环境变量配置里面找到path新建一个hugo.exe路径
 
@@ -23,15 +23,15 @@ title = 'Setblog'
 hugo new site blog
 ```
 
-![image-20260523141321725](/PersonalBlogsetup-images/image-20260523141321725.png)
+![image-20260523141321725](../../PersonalBlogsetup-images/image-20260523141321725.png)
 
 第二步就是初始化git仓库
 
-![image-20260523142028461](/PersonalBlogsetup-images/image-20260523142028461.png)
+![image-20260523142028461](../../PersonalBlogsetup-images/image-20260523142028461.png)
 
 出现了please tell me who you are    说明 Git 还没配置用户名邮箱。这是第一次用 Git 很正常。
 
-![image-20260523142835174](/PersonalBlogsetup-images/image-20260523142835174.png)
+![image-20260523142835174](../../PersonalBlogsetup-images/image-20260523142835174.png)
 
  ## 本地预览
 
@@ -96,7 +96,7 @@ git branch -M main
 git push -u origin main
 ```
 
-![屏幕截图 2026-05-23 151722](D:\hugo_extended_withdeploy_0.161.1_windows-amd64\blog\static\PersonalBlogsetup-images\屏幕截图 2026-05-23 151722.png)
+![屏幕截图 2026-05-23 151722](../../PersonalBlogsetup-images/屏幕截图 2026-05-23 151722.png)
 
 可能会出现这种报错：Git在尝试连接github服务器超时，这是因为终端没挂梯子
 
@@ -111,7 +111,7 @@ git config --global https.proxy http://127.0.0.1:7897
 
 ## 配置githubpages+githubActions自动部署
 
-![屏幕截图 2026-05-23 152355](D:\hugo_extended_withdeploy_0.161.1_windows-amd64\blog\static\PersonalBlogsetup-images\屏幕截图 2026-05-23 152355.png)
+![屏幕截图 2026-05-23 152355](../../PersonalBlogsetup-images/屏幕截图 2026-05-23 152355.png)
 
 在settings选择pages，在Build and deployment选择GItHub Actions，保存
 
@@ -208,7 +208,7 @@ git push
 
 https://usually885.github.io/usually-blog/以后这个网址就是我的博客首页
 
-**本来到这就结束了**，但是我发现这个博客上传的图片都显示成了图片链接失效![image-20260523211416601](/PersonalBlogsetup-images/image-20260523211416601.png)
+**本来到这就结束了**，但是我发现这个博客上传的图片都显示成了图片链接失效![image-20260523211416601](../../PersonalBlogsetup-images/image-20260523211416601.png)
 
 有两个解决方案
 
