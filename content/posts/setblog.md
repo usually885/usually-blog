@@ -1,14 +1,15 @@
 +++
-date = '2026-05-23T20:54:02+08:00'
+date = '2026-05-23T21:33:14+08:00'
 draft = false
-title = 'PersonalBlogSetup'
+title = 'Setblog'
+
 +++
 
 # hugo+githubpages个人博客搭建
 
 ## 环境配置
 
-![image-20260523141112176](C:\Users\usually\AppData\Roaming\Typora\typora-user-images\image-20260523141112176.png)
+![image-20260523141112176](D:\hugo_extended_withdeploy_0.161.1_windows-amd64\blog\static\PersonalBlogsetup-images\image-20260523141112176.png)
 
 在系统环境变量配置里面找到path新建一个hugo.exe路径
 
@@ -22,15 +23,15 @@ title = 'PersonalBlogSetup'
 hugo new site blog
 ```
 
-![image-20260523141321725](C:\Users\usually\AppData\Roaming\Typora\typora-user-images\image-20260523141321725.png)
+![image-20260523141321725](D:\hugo_extended_withdeploy_0.161.1_windows-amd64\blog\static\PersonalBlogsetup-images\image-20260523141321725.png)
 
 第二步就是初始化git仓库
 
-![image-20260523142028461](C:\Users\usually\AppData\Roaming\Typora\typora-user-images\image-20260523142028461.png)
+![image-20260523142028461](D:\hugo_extended_withdeploy_0.161.1_windows-amd64\blog\static\PersonalBlogsetup-images\image-20260523142028461.png)
 
 出现了please tell me who you are    说明 Git 还没配置用户名邮箱。这是第一次用 Git 很正常。
 
-![image-20260523142835174](C:\Users\usually\AppData\Roaming\Typora\typora-user-images\image-20260523142835174.png)
+![image-20260523142835174](D:\hugo_extended_withdeploy_0.161.1_windows-amd64\blog\static\PersonalBlogsetup-images\image-20260523142835174.png)
 
  ## 本地预览
 
@@ -95,7 +96,7 @@ git branch -M main
 git push -u origin main
 ```
 
-![屏幕截图 2026-05-23 151722](D:\OneDrive\图片\Screenshots\屏幕截图 2026-05-23 151722.png)
+![屏幕截图 2026-05-23 151722](D:\hugo_extended_withdeploy_0.161.1_windows-amd64\blog\static\PersonalBlogsetup-images\屏幕截图 2026-05-23 151722.png)
 
 可能会出现这种报错：Git在尝试连接github服务器超时，这是因为终端没挂梯子
 
@@ -110,7 +111,7 @@ git config --global https.proxy http://127.0.0.1:7897
 
 ## 配置githubpages+githubActions自动部署
 
-![屏幕截图 2026-05-23 152355](D:\OneDrive\图片\Screenshots\屏幕截图 2026-05-23 152355.png)
+![屏幕截图 2026-05-23 152355](D:\hugo_extended_withdeploy_0.161.1_windows-amd64\blog\static\PersonalBlogsetup-images\屏幕截图 2026-05-23 152355.png)
 
 在settings选择pages，在Build and deployment选择GItHub Actions，保存
 
@@ -206,6 +207,32 @@ git push
 打开github仓库顶部的Actions，会看到一个叫 **“发布Hugo网站到Pages”** 的工作流已经自动触发了，等他转完就ok了
 
 https://usually885.github.io/usually-blog/以后这个网址就是我的博客首页
+
+**本来到这就结束了**，但是我发现这个博客上传的图片都显示成了图片链接失效![image-20260523211416601](D:\hugo_extended_withdeploy_0.161.1_windows-amd64\blog\static\PersonalBlogsetup-images\image-20260523211416601.png)
+
+有两个解决方案
+
+### 使用static文件夹
+
+Hugo 有一个专门用来存放静态资源（如图片、视频、CSS）的文件夹叫 `static`。放在这里面的东西，上线后可以直接通过根目录访问。
+
+1. **存放图片**：在你的 `blog` 根目录下，找到 `static` 文件夹。在它里面新建一个文件夹叫 `images`。去你电脑里找到那张名为 `image-20260523141112176.png`（或者 `.jpg`）的图片，把它复制进 `static/images/` 里面。
+2. **修改 Markdown 路径**：用代码编辑器打开你的 `content/posts/PersonalBlogSetup.md`，找到插入图片的那行代码。
+   - **改成**：`![截图说明](/images/image-20260523141112176.png)`
+   - **注意**：括号里的路径**必须以斜杠 `/` 开头**。
+3. 保存文件，然后重新在终端执行 `git add .`、`git commit -m "fix image"` 和 `git push`。
+
+### 页面捆绑法Page Bundles
+
+如果你的笔记图片非常多，全都塞在一个 `static/images/` 文件夹里以后会非常乱。Hugo 提供了一种把“文章和它的专属图片”绑在一起的做法。
+
+1. **建个专属文件夹**：在 `content/posts/` 目录下，**新建一个文件夹**，名字就叫 `PersonalBlogSetup`。
+2. **移动文章并改名**：把你原来写的那个 `PersonalBlogSetup.md` 文件移动到这个新文件夹里，并且把文件名**重命名为 `index.md`**。
+3. **放入图片**：把那张 `image-20260523...` 的图片，也直接放进这个新建的文件夹里（和 `index.md` 并排放在一起）。
+4. **极简引用途径**：打开现在的 `index.md`，修改图片链接。现在你只需要直接写图片的名字即可！
+   - **改成**：`![截图说明](image-20260523141112176.png)`
+   - **注意**：括号里前面不需要加任何斜杠或文件夹名。
+5. 保存文件，重新执行 Git 上传三板斧
 
 ## 后续发表博客文章
 
