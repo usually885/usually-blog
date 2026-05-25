@@ -4,11 +4,24 @@ title = "usually885"
 theme = "PaperMod"
 
 [params]
+  comments = true
   defaultTheme = "auto"
   dateFormat = "2006-01-02"
   ShowReadingTime = true
   ShowShareButtons = true
   ShowCodeCopyButtons = true
+
+  [params.giscus]
+    repo = "usually885/usually-blog"
+    repoId = "R_kgDOSljAYg"
+    category = "Announcements"
+    categoryId = "DIC_kwDOSljAYs4C90Da"
+    mapping = "pathname"
+    strict = "0"
+    reactionsEnabled = "1"
+    emitMetadata = "0"
+    inputPosition = "bottom"
+    lang = "zh-CN"
 
 [menu]
   [[menu.main]]
@@ -22,3 +35,9 @@ theme = "PaperMod"
     name = "关于"
     url = "/about/"
     weight = 2
+
+  [[menu.main]]
+    identifier = "guestbook"
+    name = "Guestbook"
+    url = "/guestbook/"
+    weight = 3
