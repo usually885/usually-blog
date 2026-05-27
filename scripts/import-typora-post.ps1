@@ -4,6 +4,8 @@ param(
 
     [string]$PostsDir = "content/posts",
 
+    [string]$BundleName,
+
     [string]$TyporaImageDir = "$env:APPDATA\\Typora\\typora-user-images"
 )
 
@@ -23,7 +25,11 @@ function Get-BundleName {
 
 $resolvedMarkdown = (Resolve-Path -LiteralPath $SourceMarkdown).Path
 $postName = [System.IO.Path]::GetFileName($resolvedMarkdown)
-$bundleName = Get-BundleName -Name $postName
+$bundleName = if ([string]::IsNullOrWhiteSpace($BundleName)) {
+    Get-BundleName -Name $postName
+} else {
+    $BundleName
+}
 $bundleDir = Join-Path $PostsDir $bundleName
 $bundleDir = [System.IO.Path]::GetFullPath((Join-Path (Get-Location) $bundleDir))
 
