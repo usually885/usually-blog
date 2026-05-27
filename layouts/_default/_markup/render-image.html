@@ -1,0 +1,10 @@
+{{- $src := .Destination -}}
+{{- $resource := "" -}}
+{{- if and .Page (not (or (hasPrefix $src "http://") (hasPrefix $src "https://") (hasPrefix $src "/") (hasPrefix $src "data:"))) -}}
+  {{- $resource = .Page.Resources.GetMatch $src -}}
+{{- end -}}
+{{- $finalSrc := $src -}}
+{{- if $resource -}}
+  {{- $finalSrc = $resource.RelPermalink -}}
+{{- end -}}
+<img src="{{ $finalSrc }}" alt="{{ .PlainText }}"{{ with .Title }} title="{{ . }}"{{ end }}>

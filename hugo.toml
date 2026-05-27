@@ -1,5 +1,5 @@
 baseURL = "https://usually885.github.io/"
-languageCode = "zh-CN"
+locale = "zh-CN"
 title = "usually885"
 theme = "PaperMod"
 
