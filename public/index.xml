@@ -1,20 +1,41 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>usually885</title>
-    <link>http://localhost:1313/</link>
-    <description>Recent content on usually885</description>
-    <generator>Hugo</generator>
-    <language>zh-CN</language>
-    <lastBuildDate>Sat, 23 May 2026 14:57:25 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Hello Blog</title>
-      <link>http://localhost:1313/posts/hello-blog/</link>
-      <pubDate>Sat, 23 May 2026 14:57:25 +0800</pubDate>
-      <guid>http://localhost:1313/posts/hello-blog/</guid>
-      <description>&lt;p&gt;这是我搭建的博客，hello啊&lt;/p&gt;
-&lt;p&gt;你在干嘛呢qwq&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>usually885</title><link>https://usually885.github.io/</link><description>Recent content on usually885</description><generator>Hugo</generator><language>zh-CN</language><lastBuildDate>Mon, 25 May 2026 00:00:00 +0800</lastBuildDate><atom:link href="https://usually885.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Guestbook</title><link>https://usually885.github.io/guestbook/</link><pubDate>Mon, 25 May 2026 00:00:00 +0800</pubDate><guid>https://usually885.github.io/guestbook/</guid><description>&lt;p&gt;Welcome. Leave a message here.&lt;/p&gt;</description></item><item><title>Setblog</title><link>https://usually885.github.io/posts/setblog/</link><pubDate>Sat, 23 May 2026 21:33:14 +0800</pubDate><guid>https://usually885.github.io/posts/setblog/</guid><description>&lt;h1 id="hugogithubpages个人博客搭建"&gt;hugo+githubpages个人博客搭建&lt;/h1&gt;
+&lt;h2 id="环境配置"&gt;环境配置&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="image-20260523141112176" loading="lazy" src="../../PersonalBlogsetup-images/image-20260523141112176.png"&gt;&lt;/p&gt;
+&lt;p&gt;在系统环境变量配置里面找到path新建一个hugo.exe路径&lt;/p&gt;
+&lt;h1 id="hugo博客搭建流程"&gt;Hugo博客搭建流程&lt;/h1&gt;
+&lt;h2 id="创建站点骨架"&gt;创建站点骨架&lt;/h2&gt;
+&lt;p&gt;在hogo项目里面打开终端输入&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;hugo new site blog
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img alt="image-20260523141321725" loading="lazy" src="../../PersonalBlogsetup-images/image-20260523141321725.png"&gt;&lt;/p&gt;
+&lt;p&gt;第二步就是初始化git仓库&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image-20260523142028461" loading="lazy" src="../../PersonalBlogsetup-images/image-20260523142028461.png"&gt;&lt;/p&gt;
+&lt;p&gt;出现了please tell me who you are 说明 Git 还没配置用户名邮箱。这是第一次用 Git 很正常。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image-20260523142835174" loading="lazy" src="../../PersonalBlogsetup-images/image-20260523142835174.png"&gt;&lt;/p&gt;
+&lt;h2 id="本地预览"&gt;本地预览&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;第一步就是要去下载主题&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;再blog文件页打开终端，使用git命令拉取主题&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;git submodule add https://github.com/adityatelange/hugo-PaperMod.git themes/PaperMod
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;第二步在blo目录下面的.toml文件配置博客全局设置&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;baseURL = &amp;#34;https://usually885.github.io/&amp;#34;
+languageCode = &amp;#34;zh-CN&amp;#34;
+title = &amp;#34;usually885&amp;#34;
+theme = &amp;#34;PaperMod&amp;#34;
+[params]
+defaultTheme = &amp;#34;auto&amp;#34;
+dateFormat = &amp;#34;2006-01-02&amp;#34;
+ShowReadingTime = true
+ShowShareButtons = true
+ShowCodeCopyButtons = true
+[menu]
+[[menu.main]]
+identifier = &amp;#34;posts&amp;#34;
+name = &amp;#34;博客&amp;#34;
+url = &amp;#34;/posts/&amp;#34;
+weight = 1
+[[menu.main]]
+identifier = &amp;#34;about&amp;#34;
+name = &amp;#34;关于&amp;#34;
+url = &amp;#34;/about/&amp;#34;
+weight = 2
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;要想在本地预览这个博客界面需要先使用hugo server -D命令启动服务器，才能在浏览器打开这个blog本地文件&lt;/p&gt;</description></item><item><title>Hello Blog</title><link>https://usually885.github.io/posts/hello-blog/</link><pubDate>Sat, 23 May 2026 14:57:25 +0800</pubDate><guid>https://usually885.github.io/posts/hello-blog/</guid><description>&lt;p&gt;这是我搭建的博客，hello啊&lt;/p&gt;
+&lt;p&gt;你在干嘛呢qwq&lt;/p&gt;</description></item></channel></rss>
