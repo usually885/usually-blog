@@ -6,7 +6,7 @@ title = 'csrf'
 
 # csrf（跨站请求伪造）
 
-![img](https://img-blog.csdnimg.cn/img_convert/d89c2849930d01cdbc184f1dee6b8713.jpeg)
+![img](csrf-overview.jpeg)
 
 简单来说就是攻击者通过恶意B网站盗用A网站受信用户的cookie伪造恶意请求发送回A网站，达到一些操作目的
 
@@ -24,7 +24,7 @@ csrf可分为get型，post型
 
 思路：要更改查看者的邮箱地址，我们需要先登录上查看者的账号，但是不知道密码，但是通过抓包发现这个网页的数据包带了cookie，所以可以通过bp的csrfpoc来构造恶意网站，达到能借用cookie更改其邮箱地址的操作
 
-![img](https://i-blog.csdnimg.cn/direct/82a08c1e58444224b1b68b92727df77a.png)
+![img](csrf-poc.png)
 
 ## 针对csrf常见的防御措施
 
