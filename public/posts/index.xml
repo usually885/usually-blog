@@ -1,4 +1,48 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on usually885</title><link>https://usually885.github.io/usually-blog/posts/</link><description>Recent content in Posts on usually885</description><generator>Hugo</generator><language>zh-CN</language><lastBuildDate>Sat, 25 Jul 2026 01:09:10 +0800</lastBuildDate><atom:link href="https://usually885.github.io/usually-blog/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>kioptrix level 3</title><link>https://usually885.github.io/usually-blog/posts/kioptrix-level-3/</link><pubDate>Sat, 25 Jul 2026 01:09:10 +0800</pubDate><guid>https://usually885.github.io/usually-blog/posts/kioptrix-level-3/</guid><description>&lt;h3 id="靶机攻击机配置"&gt;靶机，攻击机配置&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on usually885</title><link>https://usually885.github.io/usually-blog/posts/</link><description>Recent content in Posts on usually885</description><generator>Hugo</generator><language>zh-CN</language><lastBuildDate>Sat, 01 Aug 2026 14:00:45 +0800</lastBuildDate><atom:link href="https://usually885.github.io/usually-blog/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>kioptrix level 4</title><link>https://usually885.github.io/usually-blog/posts/kioptrix-level-4/</link><pubDate>Sat, 01 Aug 2026 14:00:45 +0800</pubDate><guid>https://usually885.github.io/usually-blog/posts/kioptrix-level-4/</guid><description>&lt;h2 id="靶机配置"&gt;靶机配置&lt;/h2&gt;
+&lt;p&gt;host-only，kali是NAT，host-only双网卡&lt;/p&gt;
+&lt;p&gt;检查kali的eth1是否有网ip，&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;sudo dhclient eth1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;kali网ip：192.168.65.128/24&lt;/p&gt;
+&lt;h2 id="信息收集"&gt;信息收集&lt;/h2&gt;
+&lt;p&gt;nmap 存活探测 靶机网ip:192.168.65.132&lt;/p&gt;
+&lt;p&gt;靶机做一个默认脚本扫描，服务探测，端口扫描&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;└─$ nmap 192.168.65.132 -sC -sV -p- -min-rate 2222 -r
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-07-31 09:58 +0800
+Nmap scan report for 192.168.65.132
+Host is up (0.0017s latency).
+Not shown: 39528 closed tcp ports (reset), 26003 filtered tcp ports (no-response)
+PORT STATE SERVICE VERSION
+22/tcp open ssh OpenSSH 4.7p1 Debian 8ubuntu1.2 (protocol 2.0)
+| ssh-hostkey:
+| 1024 9b:ad:4f:f2:1e:c5:f2:39:14:b9:d3:a0:0b:e8:41:71 (DSA)
+|_ 2048 85:40:c6:d5:41:26:05:34:ad:f8:6e:f2:a7:6b:4f:0e (RSA)
+80/tcp open http Apache httpd 2.2.8 ((Ubuntu) PHP/5.2.4-2ubuntu5.6 with Suhosin-Patch)
+|_http-title: Site doesn&amp;#39;t have a title (text/html).
+|_http-server-header: Apache/2.2.8 (Ubuntu) PHP/5.2.4-2ubuntu5.6 with Suhosin-Patch
+139/tcp open netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp open netbios-ssn Samba smbd 3.0.28a (workgroup: WORKGROUP)
+MAC Address: 00:0C:29:71:CA:7D (VMware)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+Host script results:
+| smb-os-discovery:
+| OS: Unix (Samba 3.0.28a)
+| Computer name: Kioptrix4
+| NetBIOS computer name:
+| Domain name: localdomain
+| FQDN: Kioptrix4.localdomain
+|_ System time: 2026-07-31T06:00:24-04:00
+|_clock-skew: mean: 10h00m51s, deviation: 2h49m43s, median: 8h00m50s
+| smb-security-mode:
+| account_used: guest
+| authentication_level: user
+| challenge_response: supported
+|_ message_signing: disabled (dangerous, but default)
+|_smb2-time: Protocol negotiation failed (SMB2)
+|_nbstat: NetBIOS name: KIOPTRIX4, NetBIOS user: &amp;lt;unknown&amp;gt;, NetBIOS MAC: &amp;lt;unknown&amp;gt; (unknown)
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 42.32 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id="漏洞发现"&gt;漏洞发现&lt;/h2&gt;
+&lt;p&gt;网页首页是一个登录界面，尝试sql注入，这里看到了有sql语法报错，应该是有注入点的&lt;/p&gt;</description></item><item><title>kioptrix level 3</title><link>https://usually885.github.io/usually-blog/posts/kioptrix-level-3/</link><pubDate>Sat, 25 Jul 2026 01:09:10 +0800</pubDate><guid>https://usually885.github.io/usually-blog/posts/kioptrix-level-3/</guid><description>&lt;h3 id="靶机攻击机配置"&gt;靶机，攻击机配置&lt;/h3&gt;
 &lt;p&gt;kali：NAT网卡模式，网卡2设置成host-only模式，&lt;/p&gt;
 &lt;p&gt;level3靶机：hos-only模式&lt;/p&gt;
 &lt;h2 id="信息收集"&gt;信息收集&lt;/h2&gt;
